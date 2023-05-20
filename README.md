@@ -7,7 +7,7 @@ This is the official codebase of TOAST, from the following paper:
 [Baifeng Shi](https://bfshi.github.io), [Siyu Gai](https://github.com/Catherine0505), [Trevor Darrell](https://people.eecs.berkeley.edu/~trevor/), and [Xin Wang](https://xinw.ai/)\
 UC Berkeley, Microsoft Research
 
-<img src="asset/intro.png" alt="drawing" width="800"/>
+<img src="asset/intro.png" alt="drawing" width="600"/>
 
 
 ## Motivation
