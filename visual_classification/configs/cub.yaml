@@ -1,0 +1,20 @@
+_BASE_: "./base.yaml"
+RUN_N_TIMES: 999999999999
+DATA:
+  NAME: "CUB"
+  DATAPATH: "/shared/catherine_gai/CUB_200_2011"  #TODO: need to specify here
+  NUMBER_CLASSES: 200
+  MULTILABEL: False
+MODEL:
+  MODEL_ROOT: "/shared/catherine_gai"
+  TYPE: "ssl-vit"
+  TRANSFER_TYPE: "prompt"
+  PROMPT:
+    DEEP: "True"
+    NUM_TOKENS: 100
+    DROPOUT: 0.0
+    VIT_POOL_TYPE: "prompt_pool"
+SOLVER:
+  BASE_LR: 0.005
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: "/shared/catherine_gai/vpt_training/vanilla_dino_vitb16/mae_training"
