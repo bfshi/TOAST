@@ -1,2 +1,4 @@
 visual_classification/output
 visual_classification/__pycache__
+.idea/
+*__pycache__*
