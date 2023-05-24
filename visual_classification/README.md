@@ -29,7 +29,7 @@ See `env_setup.sh`
 
 ## Model Zoo
 
-All models are pre-tuned on ImageNet-1k.
+We provide checkpoints of different pre-trained models. Note that the top-down models are also pre-tuned on ImageNet-1k.
 
 |          Name           |                                       Weights                                        |
 |:-----------------------:|:------------------------------------------------------------------------------------:|
