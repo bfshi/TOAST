@@ -74,7 +74,7 @@ python train.py --config-file configs/dogs.yaml MODEL.TRANSFER_TYPE "toast" MODE
 python train.py --config-file configs/cars.yaml MODEL.TRANSFER_TYPE "toast" MODEL.MODEL_ROOT <path_to_your_model_weights> DATA.DATAPATH <path_to_your_cars_data> OUTPUT_DIR <output_path> DATA.BATCH_SIZE "32" SOLVER.BASE_LR "0.02" MODEL.TYPE "vit_top_down"
 ```
 
-Here `MODEL.TRANSFER_TYPE` controls the transfer learning algorith used (choices: `linear`, `end2end`, `prompt`, `lora`, `toast`, `toast-lite`). Note that `linear`, `end2end`, `prompt` and `lora` use `MODEL.TYPE "vit_bottom_up" and the other two use `MODEL.TYPE "vit_top_down"`.
+Here `MODEL.TRANSFER_TYPE` controls the transfer learning algorith used (choices: `linear`, `end2end`, `prompt`, `lora`, `toast`, `toast-lite`). Note that `linear`, `end2end`, `prompt` and `lora` use `MODEL.TYPE "vit_bottom_up"` and the other two use `MODEL.TYPE "vit_top_down"`.
 
 To train ViT-Large, add the argument `MODEL.SIZE "large"`. To train ConvNeXt, change `MODEL.TYPE` to `convnext_top_down`.
 
