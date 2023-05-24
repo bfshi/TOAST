@@ -1,0 +1,19 @@
+# fully finetuning alpaca
+torchrun --nproc_per_node=6 --master_port=5959 train.py --model_name_or_path decapoda-research/llama-7b-hf --data_path ./alpaca_data.json --bf16 True --output_dir output/hhh --num_train_epochs 3 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --gradient_accumulation_steps 8 --evaluation_strategy "no" --save_strategy "steps" --save_steps 2000 --save_total_limit 1 --learning_rate 2e-5 --weight_decay 0. --warmup_ratio 0.03 --lr_scheduler_type "cosine" --logging_steps 1 --fsdp "full_shard auto_wrap" --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' --tf32 True --report_to "none" --model "llama"
+
+# top-down tuning alpaca
+torchrun --nproc_per_node=6 --master_port=5959 train.py --model_name_or_path decapoda-research/llama-7b-hf --data_path ./alpaca_data.json --bf16 True --output_dir output/hhh --num_train_epochs 3 --per_device_train_batch_size 3 --per_device_eval_batch_size 3 --gradient_accumulation_steps 8 --evaluation_strategy "no" --save_strategy "steps" --save_steps 2000 --save_total_limit 1 --learning_rate 2e-5 --weight_decay 0. --warmup_ratio 0.03 --lr_scheduler_type "cosine" --logging_steps 1 --tf32 True --report_to "none" --deepspeed "./configs/default_offload_opt_param.json" --model "llama-topdown"
+
+# LoRA tuning on alpaca
+torchrun --nproc_per_node=6 --master_port=5959 train.py --model_name_or_path decapoda-research/llama-7b-hf --data_path ./alpaca_data.json --bf16 True --output_dir output/hhh --num_train_epochs 3 --per_device_train_batch_size 3 --per_device_eval_batch_size 3 --gradient_accumulation_steps 8 --evaluation_strategy "no" --save_strategy "steps" --save_steps 2000 --save_total_limit 1 --learning_rate 2e-5 --weight_decay 0. --warmup_ratio 0.03 --lr_scheduler_type "cosine" --logging_steps 1 --tf32 True --report_to "none" --deepspeed "./configs/default_offload_opt_param.json" --model "llama-lora"
+
+# inference
+## (optional) translate deepspeed ZERO checkpoint into pytorch_model.bin format:
+python zero_to_fp32.py . pytorch_model.bin
+## (optional) since ZERO only saves unfrozen parameters, we need to merge them with other frozen pretrained parameters:
+python merge_model_checkpoints.py --pretrained_dir output/llama-7b/ --new_weight_dir output/230420_1134/ --save_dir output/230420_1134/
+## Then inference:
+python inference.py --model_name_or_path decapoda-research/llama-7b-hf --bf16 True --fsdp "full_shard auto_wrap" --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' --tf32 True --report_to "none" --output_dir output/inference --model "llama"
+
+# pretune top down model
+torchrun --nproc_per_node=6 --master_port=4455 pretune_top_down.py --model_name_or_path decapoda-research/llama-7b-hf --data_path ./alpaca_data.json --bf16 True --output_dir output/230420_1134 --num_train_epochs 1 --per_device_train_batch_size 3 --per_device_eval_batch_size 3 --gradient_accumulation_steps 8 --evaluation_strategy "no" --save_strategy "steps" --save_steps 2000 --save_total_limit 1 --learning_rate 3e-5 --weight_decay 0. --warmup_ratio 0.03 --lr_scheduler_type "cosine" --logging_steps 1 --tf32 True --report_to "none" --deepspeed "./configs/default_offload_opt_param.json"

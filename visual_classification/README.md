@@ -1,6 +1,6 @@
 # TOAST for Visual Classification
 
-------
+<img src="assets/att_compare.png" alt="drawing" width="800"/>
 
 ## Environment settings
 
@@ -29,6 +29,8 @@ See `env_setup.sh`
 
 ## Model Zoo
 
+All models are pre-tuned on ImageNet-1k.
+
 |          Name           |                                       Weights                                        |
 |:-----------------------:|:------------------------------------------------------------------------------------:|
 |    ViT-B (bottom-up)    | [model](https://berkeley.box.com/shared/static/zblb4lfqoiyuiyo94a496h45qlqel6r8.pth) |
@@ -37,6 +39,17 @@ See `env_setup.sh`
 | ViT-L-in21k (top-down)  | [model](https://berkeley.box.com/shared/static/pl1ldyejj14nodumlmj2r3mi7stqy3v9.pth) |
 | ConvNeXt-B (bottom-up)  | [model](https://berkeley.box.com/shared/static/g629xskuq56rzo9qxrm8w7yi2rk1l07s.pth) |
 |  ConvNeXt-B (top-down)  | [model](https://berkeley.box.com/shared/static/skzkydmvnch8jlpagd4ct6ru9ywyzc9v.pth) |
+
+## Results of ViT-B on FGVC
+
+|   Method   | CUB  | NABirds | OxfordFlower | Stanford-dogs | Stanford-cars | Average Acc |
+|:----------:|:----:|:-------:|:------------:|:-------------:|:-------------:|:-----------:|
+|   Linear   | 76.8 |  47.3   |     81.7     |     97.7      |     60.3      |    72.8     |
+| Fine-tune  | 80.5 |  60.2   |     86.9     |     94.7      |     83.2      |    81.1     |
+|    VPT     | 76.9 |  72.2   |     80.6     |     97.3      |     62.8      |    78.0     |
+|    LoRA    | 82.5 |  71.2   |     81.2     |     97.5      |     76.6      |    79.8     |
+|   TOAST    | 85.0 |  75.2   |     88.7     |     97.4      |     84.5      |    86.2     |
+| TOAST-Lite | 84.5 |  76.9   |     89.4     |     97.4      |     82.0      |    86.0     |
 
 ## Running
 
@@ -61,7 +74,7 @@ python train.py --config-file configs/dogs.yaml MODEL.TRANSFER_TYPE "toast" MODE
 python train.py --config-file configs/cars.yaml MODEL.TRANSFER_TYPE "toast" MODEL.MODEL_ROOT <path_to_your_model_weights> DATA.DATAPATH <path_to_your_cars_data> OUTPUT_DIR <output_path> DATA.BATCH_SIZE "32" SOLVER.BASE_LR "0.02" MODEL.TYPE "vit_top_down"
 ```
 
-Here `MODEL.TRANSFER_TYPE` controls the transfer learning algorith used (choices: `linear`, `end2end`, `prompt`, `lora`, `toast`, `toast-lite`).
+Here `MODEL.TRANSFER_TYPE` controls the transfer learning algorith used (choices: `linear`, `end2end`, `prompt`, `lora`, `toast`, `toast-lite`). Note that `linear`, `end2end`, `prompt` and `lora` use `MODEL.TYPE "vit_bottom_up" and the other two use `MODEL.TYPE "vit_top_down"`.
 
 To train ViT-Large, add the argument `MODEL.SIZE "large"`. To train ConvNeXt, change `MODEL.TYPE` to `convnext_top_down`.
 

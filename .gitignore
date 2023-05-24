@@ -1,4 +1,6 @@
 visual_classification/output
 visual_classification/__pycache__
+language_generation/output
 .idea/
 *__pycache__*
+*wandb*

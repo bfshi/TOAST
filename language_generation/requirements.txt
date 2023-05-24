@@ -1,0 +1,5 @@
+rouge_score
+fire
+openai
+sentencepiece
+tokenizers>=0.13.3
