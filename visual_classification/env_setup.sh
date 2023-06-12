@@ -22,9 +22,14 @@ conda install -c iopath iopath
 # for transformers
 pip install timm==0.4.12
 pip install ml-collections
+pip install einops
 
 # for lora
 pip install loralib
+
+# for image corruption
+pip install scikit-image
+pip install Wand
 
 # Optional: for slurm jobs
 pip install submitit -U
