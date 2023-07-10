@@ -31,16 +31,18 @@ See `env_setup.sh`
 
 We provide checkpoints of different pre-trained models. Note that the top-down models are also pre-tuned on ImageNet-1k.
 
-|          Name           |                                       Weights                                        |
-|:-----------------------:|:------------------------------------------------------------------------------------:|
-|    ViT-B (bottom-up)    | [model](https://berkeley.box.com/shared/static/zblb4lfqoiyuiyo94a496h45qlqel6r8.pth) |
-|    ViT-B (top-down)     | [model](https://berkeley.box.com/shared/static/ejf7a2vnzg8pmwty0ih4temm2vgw14u5.pth) |
-| ViT-L-in21k (bottom-up) | [model](https://berkeley.box.com/shared/static/ptz6d4nn5jd6gagw0c92b1qi2iaxbx4b.pth) |
-| ViT-L-in21k (top-down)  | [model](https://berkeley.box.com/shared/static/pl1ldyejj14nodumlmj2r3mi7stqy3v9.pth) |
-| ConvNeXt-B (bottom-up)  | [model](https://berkeley.box.com/shared/static/g629xskuq56rzo9qxrm8w7yi2rk1l07s.pth) |
-|  ConvNeXt-B (top-down)  | [model](https://berkeley.box.com/shared/static/skzkydmvnch8jlpagd4ct6ru9ywyzc9v.pth) |
+|             Name             |                                       Weights                                        |
+|:----------------------------:|:------------------------------------------------------------------------------------:|
+|    ViT-B-in1k (bottom-up)    | [model](https://berkeley.box.com/shared/static/zblb4lfqoiyuiyo94a496h45qlqel6r8.pth) |
+|    ViT-B-in1k (top-down)     | [model](https://berkeley.box.com/shared/static/ejf7a2vnzg8pmwty0ih4temm2vgw14u5.pth) |
+|   ViT-B-in21k (bottom-up)    | [model](https://berkeley.box.com/shared/static/kbsnodpqvowtllze45lkuh90qwxtsxsu.pth) |
+|    ViT-B-in21k (top-down)    | [model](https://berkeley.box.com/shared/static/u3w4ie6xww0o2w9kb4rukkkz6lx66ajr.pth) |
+|   ViT-L-in21k (bottom-up)    | [model](https://berkeley.box.com/shared/static/ptz6d4nn5jd6gagw0c92b1qi2iaxbx4b.pth) |
+|    ViT-L-in21k (top-down)    | [model](https://berkeley.box.com/shared/static/pl1ldyejj14nodumlmj2r3mi7stqy3v9.pth) |
+| ConvNeXt-B-in21k (bottom-up) | [model](https://berkeley.box.com/shared/static/g629xskuq56rzo9qxrm8w7yi2rk1l07s.pth) |
+| ConvNeXt-B-in21k (top-down)  | [model](https://berkeley.box.com/shared/static/skzkydmvnch8jlpagd4ct6ru9ywyzc9v.pth) |
 
-## Results of ViT-B on FGVC
+## Results of ViT-B-in1k on FGVC
 
 |   Method   | CUB  | NABirds | OxfordFlower | Stanford-dogs | Stanford-cars | Average Acc |
 |:----------:|:----:|:-------:|:------------:|:-------------:|:-------------:|:-----------:|

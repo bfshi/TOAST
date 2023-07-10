@@ -263,6 +263,9 @@ def train():
         model_max_length=training_args.model_max_length,
         padding_side="right",
         use_fast=False,
+        bos_token=DEFAULT_BOS_TOKEN,
+        eos_token=DEFAULT_EOS_TOKEN,
+        unk_token=DEFAULT_UNK_TOKEN,
     )
 
     special_tokens_dict = dict()
@@ -318,10 +321,6 @@ def train():
     trainer.save_model(output_dir=training_args.output_dir)
 
     metrics = train_result.metrics
-    #max_train_samples = (
-    #    data_args.max_train_samples if data_args.max_train_samples is not None else len(train_dataset)
-    #)
-    #metrics["train_samples"] = min(max_train_samples, len(train_dataset))
     metrics["train_samples"] = len(train_dataset)
     trainer.log_metrics("train", metrics)
     trainer.save_metrics("train", metrics)
@@ -333,8 +332,6 @@ def train():
 
         metrics = trainer.evaluate()
 
-        #max_eval_samples = data_args.max_eval_samples if data_args.max_eval_samples is not None else len(eval_dataset)
-        #metrics["eval_samples"] = min(max_eval_samples, len(eval_dataset))
         metrics["eval_samples"] = len(eval_dataset)
         try:
             perplexity = math.exp(metrics["eval_loss"])

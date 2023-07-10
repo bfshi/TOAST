@@ -12,6 +12,8 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+import os
+import json
 import copy
 import logging
 from dataclasses import dataclass, field
@@ -28,23 +30,13 @@ from models.llama_top_down import LlamaTopDownForCausalLM
 from models.llama_lora import LlamaLoRAForCausalLM
 from models.llama_top_down_lora import LlamaTopDownLoRAForCausalLM
 
+from fastchat.model.model_adapter import get_conversation_template
+
 IGNORE_INDEX = -100
 DEFAULT_PAD_TOKEN = "[PAD]"
 DEFAULT_EOS_TOKEN = "</s>"
 DEFAULT_BOS_TOKEN = "<s>"
 DEFAULT_UNK_TOKEN = "<unk>"
-PROMPT_DICT = {
-    "prompt_input": (
-        "Below is an instruction that describes a task, paired with an input that provides further context. "
-        "Write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
-    ),
-    "prompt_no_input": (
-        "Below is an instruction that describes a task. "
-        "Write a response that appropriately completes the request.\n\n"
-        "### Instruction:\n{instruction}\n\n### Response:"
-    ),
-}
 
 
 @dataclass
@@ -55,12 +47,16 @@ class ModelArguments:
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):
     cache_dir: Optional[str] = field(default=None)
+    output_dir: str = field(
+        default="none",
+        metadata={"help": "output path"},
+    )
 
 
 @dataclass
 class InferenceArguments:
     model_max_length: int = field(
-        default=512,
+        default=1024,
         metadata={"help": "Maximum sequence length. Sequences will be right padded (and possibly truncated)."},
     )
     load_in_8bit: bool = field(
@@ -79,13 +75,6 @@ class InferenceArguments:
         default="none",
         metadata={"help": "checkpoint for finetuned model (whole model / lora weights / top-down weights"},
     )
-
-
-def generate_prompt(instruction, input=None):
-    if input:
-        return PROMPT_DICT["prompt_input"].format(instruction=instruction, input=input)
-    else:
-        return PROMPT_DICT["prompt_no_input"].format(instruction=instruction)
 
 
 def smart_tokenizer_and_embedding_resize(
@@ -151,6 +140,9 @@ def inference():
         model_max_length=inference_args.model_max_length,
         padding_side="right",
         use_fast=False,
+        bos_token=DEFAULT_BOS_TOKEN,
+        eos_token=DEFAULT_EOS_TOKEN,
+        unk_token=DEFAULT_UNK_TOKEN,
     )
 
     special_tokens_dict = dict()
@@ -173,12 +165,11 @@ def inference():
     model.eval()
 
     generation_config = GenerationConfig(
-        temperature=2.0,
-        top_p=0.75,
-        num_beams=4,
-        repetition_penalty=1.5
+        temperature=0.7,
+        do_sample=True,
     )
 
+    log = []
     for instruction in [
         # Generic
         "How can I improve my time management skills?",
@@ -224,19 +215,30 @@ def inference():
     ]:
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print("Instruction:", instruction)
-        inputs = tokenizer(generate_prompt(instruction, None), return_tensors="pt")
+        conv = get_conversation_template("vicuna")
+        conv.append_message(conv.roles[0], instruction)
+        conv.append_message(conv.roles[1], None)
+        input = conv.get_prompt()
+        inputs = tokenizer(input, return_tensors="pt")
         outputs = model.generate(input_ids=inputs["input_ids"].cuda(),
                                  generation_config=generation_config,
                                  max_new_tokens=inference_args.model_max_length,
                                  return_dict_in_generate=True,
-                                 output_scores=True)
+                                 output_scores=True,
+                                 eos_token_id=tokenizer.eos_token_id)
         # input_length is the length of the input prompt for decoder-only models, like the GPT family, and 1 for
         # encoder-decoder models, like BART or T5.
         input_length = 1 if model.config.is_encoder_decoder else inputs.input_ids.shape[1]
         generated_tokens = outputs.sequences[:, input_length:]
+        response = tokenizer.decode(generated_tokens[0])
 
-        print("Response:", tokenizer.decode(generated_tokens[0]))
+        print("Response:", response)
         print()
+
+        log.append({"id": id, "instruction": instruction, "output": response})
+
+    with open(os.path.join(training_args.output_dir, "output.json"), "w") as outfile:
+        json.dump(log, outfile)
 
 if __name__ == "__main__":
     inference()
