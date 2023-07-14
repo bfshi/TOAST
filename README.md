@@ -40,17 +40,10 @@ If you found this code helpful, please consider citing our work:
 
 
 ```bibtext
-
 @article{shi2023toast,
-
   title={TOAST: Transfer Learning via Attention Steering},
-  
   author={Shi, Baifeng and Gai, Siyu and Darrell, Trevor and Wang, Xin},
-  
   journal={arXiv preprint arXiv:2305.15542},
-  
   year={2023}
-  
 }
-
 ```
