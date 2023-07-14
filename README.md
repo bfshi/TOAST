@@ -31,25 +31,26 @@ This codebase is largely built upon
 - "[Top-Down Visual Attention from Analysis by Synthesis](https://github.com/bfshi/AbSViT)" 
 - "[Visual Prompt Tuning](https://github.com/KMnP/vpt)"
 - "[Stanford Alpaca: An Instruction-following LLaMA Model](https://github.com/tatsu-lab/stanford_alpaca)"
+- "[FastChat](https://github.com/lm-sys/FastChat)"
 
-[//]: # ()
-[//]: # (## Citation)
 
-[//]: # (If you found this code helpful, please consider citing our work: )
+## Citation
 
-[//]: # ()
-[//]: # (```bibtext)
+If you found this code helpful, please consider citing our work: 
 
-[//]: # (@article{shi2022visual,)
 
-[//]: # (  title={Visual Attention Emerges from Recurrent Sparse Reconstruction},)
+```bibtext
 
-[//]: # (  author={Shi, Baifeng and Song, Yale and Joshi, Neel and Darrell, Trevor and Wang, Xin},)
+@article{shi2023toast,
 
-[//]: # (  journal={arXiv preprint arXiv:2204.10962},)
+  title={TOAST: Transfer Learning via Attention Steering},
+  
+  author={Shi, Baifeng and Gai, Siyu and Darrell, Trevor and Wang, Xin},
+  
+  journal={arXiv preprint arXiv:2305.15542},
+  
+  year={2023}
+  
+}
 
-[//]: # (  year={2022})
-
-[//]: # (})
-
-[//]: # (```)
+```
