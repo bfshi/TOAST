@@ -5,3 +5,4 @@ sentencepiece
 tokenizers>=0.13.3
 loralib
 fschat
+deepspeed
