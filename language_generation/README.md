@@ -4,6 +4,8 @@
 
 ## Environment settings
 
+This repo is tested with PyTorch 1.13.0. Other dependencies can be installed via
+
 ```bash
 pip install -r requirements.txt
 ```
