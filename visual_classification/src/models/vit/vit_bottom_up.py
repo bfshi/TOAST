@@ -289,7 +289,7 @@ class VisionTransformer(nn.Module):
                     if i == 0:
                         hidden_states, visualization_heads = self.blocks[i](x)
                     else:
-                        if i <= self.deep_prompt_embeddings.shape[0] and i > self.deep_prompt_embeddings.shape[0] - self.truncate_embedding and i < 1:
+                        if i <= self.deep_prompt_embeddings.shape[0] and i > self.deep_prompt_embeddings.shape[0] - self.truncate_embedding:
                             deep_prompt_emb = self.prompt_dropout(self.prompt_proj(
                                 self.deep_prompt_embeddings[i-1]).expand(B, -1, -1))
 
