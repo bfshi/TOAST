@@ -375,7 +375,7 @@ def train():
     elif training_args.model == 'llama-topdown-lora':
         lora.mark_only_lora_as_trainable(model)
         for name, param in model.named_parameters():
-            if "top_down_transform" in name or "prompt" in name:
+            if "prompt" in name:
                 param.requires_grad = True
 
 
