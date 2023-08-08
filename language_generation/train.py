@@ -370,7 +370,7 @@ def train():
         lora.mark_only_lora_as_trainable(model)
     elif training_args.model == 'llama-topdown':
         for name, param in model.named_parameters():
-            if "decoders" not in name and "prompt" not in name:
+            if "linear2" not in name and "prompt" not in name:
                 param.requires_grad = False
     elif training_args.model == 'llama-topdown-lora':
         lora.mark_only_lora_as_trainable(model)
